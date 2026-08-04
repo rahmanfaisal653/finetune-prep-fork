@@ -139,45 +139,72 @@ function uniqueSources(sources) {
 </script>
 
 <template>
-  <div class="flex flex-col flex-1 h-full min-w-0 bg-slate-950">
-    <div ref="scroller" class="flex-1 overflow-y-auto px-6 py-6">
-      <div class="max-w-3xl mx-auto space-y-6">
-        <div v-if="!messages.length" class="text-center text-slate-500 mt-20">
-          <div class="text-4xl mb-3">💬</div>
-          Ask anything about your uploaded documents.
+  <div class="flex flex-col flex-1 h-full min-w-0 bg-transparent relative z-10">
+    <div ref="scroller" class="flex-1 overflow-y-auto px-6 py-8 scroll-smooth">
+      <div class="max-w-3xl mx-auto space-y-8 pb-20">
+        <!-- Empty State -->
+        <div v-if="!messages.length" class="flex flex-col items-center justify-center mt-32 opacity-70">
+          <div class="w-20 h-20 mb-6 rounded-full bg-gradient-to-tr from-cyan-500/20 to-indigo-500/20 shadow-[0_0_30px_rgba(34,211,238,0.2)] border border-cyan-500/30 flex items-center justify-center">
+            <svg class="w-10 h-10 text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+          </div>
+          <h2 class="text-2xl font-semibold text-white tracking-tight drop-shadow-lg mb-2">How can I help you?</h2>
+          <p class="text-zinc-400 text-sm">Ask anything about your uploaded documents.</p>
         </div>
 
-        <div v-for="(m, i) in messages" :key="i" class="flex gap-3"
-             :class="m.role === 'user' ? 'justify-end' : 'justify-start'">
-          <div class="max-w-[85%] rounded-2xl px-4 py-3 whitespace-pre-wrap leading-relaxed"
+        <!-- Messages -->
+        <div v-for="(m, i) in messages" :key="i" class="flex gap-4 group"
+             :class="m.role === 'user' ? 'flex-row-reverse' : 'flex-row'">
+          
+          <!-- Avatar -->
+          <div class="w-10 h-10 shrink-0 rounded-full flex items-center justify-center mt-1"
+               :class="m.role === 'user' 
+                 ? 'bg-zinc-800 border border-zinc-700' 
+                 : 'bg-gradient-to-tr from-cyan-400 to-indigo-500 shadow-[0_0_15px_rgba(34,211,238,0.5)]'">
+            <svg v-if="m.role === 'user'" class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <div v-else class="w-4 h-4 bg-white rounded-full"></div>
+          </div>
+
+          <!-- Bubble -->
+          <div class="max-w-[80%] rounded-3xl px-6 py-4 whitespace-pre-wrap leading-relaxed shadow-xl backdrop-blur-md transition-all duration-300 hover:shadow-2xl text-[15px]"
                :class="m.role === 'user'
-                 ? 'bg-sky-600 text-white'
-                 : 'bg-slate-800 text-slate-100'">
+                 ? 'bg-gradient-to-br from-cyan-600/90 to-indigo-600/90 text-white shadow-[0_0_20px_rgba(6,182,212,0.3)] border border-cyan-400/30 rounded-tr-sm'
+                 : 'bg-white/5 border border-white/10 text-zinc-100 shadow-[0_8px_30px_rgba(0,0,0,0.3)] rounded-tl-sm'">
             <span v-if="m.content">{{ m.content }}</span>
-            <span v-else class="text-slate-400 animate-pulse">…</span>
+            <span v-else class="flex space-x-1 items-center h-5">
+              <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+              <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+              <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></span>
+            </span>
+            
             <div v-if="m.sources && m.sources.length"
-                 class="mt-3 pt-2 border-t border-slate-700 text-xs text-slate-400">
-              Sources: {{ uniqueSources(m.sources).join(', ') }}
+                 class="mt-4 pt-3 border-t border-white/10 text-xs font-medium text-cyan-200/70 flex gap-2 flex-wrap">
+              <span class="text-zinc-500">Sources:</span>
+              <span v-for="src in uniqueSources(m.sources)" :key="src" class="px-2 py-1 bg-black/30 rounded-md border border-white/5">
+                {{ src }}
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="border-t border-slate-800 bg-slate-900 px-6 py-4">
-      <div class="max-w-3xl mx-auto flex gap-2">
+    <!-- Floating Input Dock -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-3xl px-6 z-20">
+      <div class="flex gap-3 bg-black/40 backdrop-blur-2xl border border-white/10 p-2 rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.5),0_0_20px_rgba(34,211,238,0.1)] transition-all duration-300 focus-within:shadow-[0_10px_40px_rgba(0,0,0,0.5),0_0_30px_rgba(34,211,238,0.2)] focus-within:border-cyan-500/50">
         <textarea
           v-model="input"
           rows="1"
-          placeholder="Message…"
-          class="flex-1 resize-none rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 text-sm focus:outline-none focus:border-sky-500"
+          placeholder="Ask a question..."
+          class="flex-1 resize-none bg-transparent px-6 py-4 text-[15px] text-zinc-100 placeholder-zinc-500 focus:outline-none max-h-32"
           @keydown.enter.exact.prevent="send"
         ></textarea>
         <button
-          class="rounded-xl bg-sky-600 px-5 font-medium text-white disabled:opacity-40 hover:bg-sky-500"
+          class="shrink-0 w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.2)] disabled:opacity-30 disabled:hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] disabled:hover:bg-cyan-500/20 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:bg-cyan-500/30 hover:text-cyan-100 hover:scale-105 transition-all duration-300 self-end mb-[2px] mr-[2px]"
           :disabled="streaming || !input.trim()"
           @click="send"
-        >Send</button>
+        >
+          <svg class="w-5 h-5 -ml-0.5 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m-7 7l7-7 7 7"></path></svg>
+        </button>
       </div>
     </div>
   </div>
