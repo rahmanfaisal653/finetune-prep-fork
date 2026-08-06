@@ -22,12 +22,11 @@ def extract_text(filepath: Path) -> str:
     ext = filepath.suffix.lower()
     if ext == '.pdf':
         try:
-            result = subprocess.run(
-                ['pdftotext', '-layout', str(filepath), '-'],
-                capture_output=True, text=True, timeout=60
-            )
-            return result.stdout.strip()
-        except Exception:
+            from pypdf import PdfReader
+            reader = PdfReader(str(filepath))
+            return "\n\n".join((p.extract_text() or "") for p in reader.pages)
+        except Exception as e:
+            print(f"Error extracting {filepath}: {e}")
             return ""
     elif ext in ('.txt', '.md'):
         return filepath.read_text(encoding='utf-8', errors='replace')
@@ -127,7 +126,10 @@ def main():
     model = SentenceTransformer(args.model)
     print(f"   Model loaded: {args.model}")
     
-    client = chromadb.PersistentClient(path=args.store)
+    client = chromadb.PersistentClient(
+        path=args.store,
+        settings=Settings(anonymized_telemetry=False)
+    )
     collection = client.get_or_create_collection(
         name="pdf_docs",
         metadata={"hnsw:space": "cosine"}

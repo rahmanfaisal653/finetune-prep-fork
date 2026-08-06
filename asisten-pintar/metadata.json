@@ -1,0 +1,6 @@
+{
+  "name": "Asisten Pintar",
+  "description": "Aplikasi Asisten Pintar RAG (Retrieval-Augmented Generation) untuk membaca, memproses, dan menjawab pertanyaan dari dokumen PDF, TXT, MD, dan IPYNB.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
