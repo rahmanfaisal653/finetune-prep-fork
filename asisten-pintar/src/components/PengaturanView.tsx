@@ -155,7 +155,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
                     className="flex-1 w-full bg-[#f3f4f5] dark:bg-[#2e3132] border border-[#cdc3d0] dark:border-gray-700 rounded-lg px-4 py-3 font-body text-[14px] text-[#191c1d] dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#d8b4fe] focus:border-[#6f5092]"
-                    placeholder="sk-c60b5b633b8ba408-ekg39z-70bf55ae"
+                    placeholder="sk-..."
                   />
                   <button
                     type="button"

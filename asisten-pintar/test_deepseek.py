@@ -2,7 +2,10 @@ import os
 from openai import OpenAI
 import json
 
-client = OpenAI(api_key="sk-c60b5b633b8ba408-ekg39z-70bf55ae", base_url="http://43.159.43.50:20128/v1")
+api_key = os.getenv("RAG_API_KEY", "")
+base_url = os.getenv("RAG_API_URL", "http://localhost:8000/v1")
+
+client = OpenAI(api_key=api_key, base_url=base_url)
 
 response = client.chat.completions.create(
     model="cbcn/glm-5.0-turbo",

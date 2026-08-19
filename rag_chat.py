@@ -122,8 +122,8 @@ def main():
     parser.add_argument('--store', type=str, required=True, help='Path to vector DB (from rag_ingest.py)')
     parser.add_argument('--model', type=str, default='kr/claude-haiku-4.5',
                         help='9router model to use')
-    parser.add_argument('--api-url', type=str, default='http://localhost:20128/v1')
-    parser.add_argument('--api-key', type=str, default='sk-3c3658bdb8da3d69-xx3yso-8d74c55d')
+    parser.add_argument('--api-url', type=str, default=os.getenv('RAG_API_URL', 'http://localhost:8000/v1'))
+    parser.add_argument('--api-key', type=str, default=os.getenv('RAG_API_KEY', ''))
     parser.add_argument('--embed-model', type=str, default='all-MiniLM-L6-v2')
     parser.add_argument('--top-k', type=int, default=15, help='Chunks to retrieve per query')
     parser.add_argument('--system', type=str, default=DEFAULT_SYSTEM)

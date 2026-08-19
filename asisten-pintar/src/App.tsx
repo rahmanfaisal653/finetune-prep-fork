@@ -63,11 +63,6 @@ export default function App() {
   const [settings, setSettings] = useState<AISettings>(() => {
     const saved = localStorage.getItem('asisten_pintar_settings');
     const parsedSettings = saved ? JSON.parse(saved) : INITIAL_SETTINGS;
-    if (!parsedSettings.apiKey) {
-      parsedSettings.apiKey = 'sk-c60b5b633b8ba408-ekg39z-70bf55ae';
-    }
-    // Enforce model name temporarily as requested
-    parsedSettings.modelName = 'cbcn/glm-5.0-turbo';
     return parsedSettings;
   });
 
