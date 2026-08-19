@@ -174,6 +174,16 @@ def safe_filename(name: str) -> str:
 
 def document_summary(name: str, chunks: int) -> dict:
     path = UPLOAD_DIR / name
+    if not path.exists():
+        watched = Path(_config.get("watched_folder", ""))
+        if watched.exists():
+            candidate = watched / name
+            if candidate.exists():
+                path = candidate
+            else:
+                matches = list(watched.rglob(name))
+                if matches:
+                    path = matches[0]
     try:
         stat = path.stat()
         size = stat.st_size

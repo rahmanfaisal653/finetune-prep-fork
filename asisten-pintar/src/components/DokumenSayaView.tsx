@@ -265,84 +265,69 @@ export const DokumenSayaView: React.FC<DokumenSayaViewProps> = ({
             </div>
           </div>
 
-          {/* All Files Section */}
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-headline text-[20px] font-bold text-gray-900 dark:text-gray-100">
-                All Files
-              </h3>
-              <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e24] px-3 py-1.5 rounded-lg text-[13px] font-body text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                  <span className="material-symbols-outlined text-[16px]">group</span>
-                  People
-                  <span className="material-symbols-outlined text-[16px]">expand_more</span>
-                </button>
-                <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e24] px-3 py-1.5 rounded-lg text-[13px] font-body text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                  <span className="material-symbols-outlined text-[16px]">description</span>
-                  Type
-                  <span className="material-symbols-outlined text-[16px]">expand_more</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-[#1e1e24] border border-gray-100 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
-              <div className="flex items-center gap-4 px-4 py-3 bg-gray-50/50 dark:bg-[#1a1a20] border-b border-gray-100 dark:border-gray-800">
-                <div className="w-6 flex justify-center">
-                  <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"></div>
+            {/* All Files Section */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-headline text-[20px] font-bold text-gray-900 dark:text-gray-100">
+                  All Files
+                </h3>
+                <div className="flex items-center gap-3">
+                  <button className="flex items-center gap-2 border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e1e24] px-3 py-1.5 rounded-lg text-[13px] font-body text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <span className="material-symbols-outlined text-[16px]">description</span>
+                    Type
+                    <span className="material-symbols-outlined text-[16px]">expand_more</span>
+                  </button>
                 </div>
-                <div className="flex-1 font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1 cursor-pointer">
-                  NAME <span className="material-symbols-outlined text-[14px]">arrow_downward</span>
-                </div>
-                <div className="w-[140px] hidden md:block font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  SHARED BY
-                </div>
-                <div className="w-[100px] hidden sm:block font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  SIZE
-                </div>
-                <div className="w-[120px] hidden lg:block font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  DATE
-                </div>
-                <div className="w-8"></div>
               </div>
 
-              <div className="divide-y divide-gray-50 dark:divide-gray-800/50">
-                {documents.map((doc) => {
-                  const style = colorMap[doc.type] || colorMap.txt;
-                  return (
-                    <div key={doc.id} className="flex items-center gap-4 px-4 py-3 hover:bg-blue-50/30 dark:hover:bg-gray-800/40 transition-colors group">
-                      <div className="w-6 flex justify-center">
-                        <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                      </div>
+              <div className="bg-white dark:bg-[#1e1e24] border border-gray-100 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
+                <div className="flex items-center gap-4 px-4 py-3 bg-gray-50/50 dark:bg-[#1a1a20] border-b border-gray-100 dark:border-gray-800">
+                  <div className="w-6 flex justify-center">
+                    <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600"></div>
+                  </div>
+                  <div className="flex-1 font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider flex items-center gap-1 cursor-pointer">
+                    NAME <span className="material-symbols-outlined text-[14px]">arrow_downward</span>
+                  </div>
+                  <div className="w-[100px] hidden sm:block font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    SIZE
+                  </div>
+                  <div className="w-[120px] hidden lg:block font-body text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    DATE
+                  </div>
+                  <div className="w-8"></div>
+                </div>
 
-                      <div className="flex-1 min-w-0 flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${style.lightBg} dark:bg-gray-800`}>
-                          <span className={`material-symbols-outlined text-[20px] ${style.icon}`} style={{ fontVariationSettings: "'FILL' 1" }}>
-                            {style.nameIcon}
+                <div className="divide-y divide-gray-50 dark:divide-gray-800/50">
+                  {documents.map((doc) => {
+                    const style = colorMap[doc.type] || colorMap.txt;
+                    return (
+                      <div key={doc.id} className="flex items-center gap-4 px-4 py-3 hover:bg-blue-50/30 dark:hover:bg-gray-800/40 transition-colors group">
+                        <div className="w-6 flex justify-center">
+                          <div className="w-4 h-4 rounded border border-gray-300 dark:border-gray-600 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                        </div>
+
+                        <div className="flex-1 min-w-0 flex items-center gap-3">
+                          <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${style.lightBg} dark:bg-gray-800`}>
+                            <span className={`material-symbols-outlined text-[20px] ${style.icon}`} style={{ fontVariationSettings: "'FILL' 1" }}>
+                              {style.nameIcon}
+                            </span>
+                          </div>
+                          <span
+                            className="font-body text-[14px] font-semibold text-gray-900 dark:text-gray-100 truncate cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            onClick={() => handleOpenOriginalDoc(doc)}
+                            title={doc.name}
+                          >
+                            {doc.name}
                           </span>
                         </div>
-                        <span
-                          className="font-body text-[14px] font-semibold text-gray-900 dark:text-gray-100 truncate cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                          onClick={() => handleOpenOriginalDoc(doc)}
-                          title={doc.name}
-                        >
-                          {doc.name}
-                        </span>
-                      </div>
 
-                      <div className="w-[140px] hidden md:flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
-                          YOU
+                        <div className="w-[100px] hidden sm:block font-body text-[13px] font-medium text-gray-500 dark:text-gray-400">
+                          {formatSize(doc.size || 0)}
                         </div>
-                        <span className="font-body text-[13px] font-medium text-gray-600 dark:text-gray-400">Anda</span>
-                      </div>
 
-                      <div className="w-[100px] hidden sm:block font-body text-[13px] font-medium text-gray-500 dark:text-gray-400">
-                        {formatSize(doc.size || 0)}
-                      </div>
-
-                      <div className="w-[120px] hidden lg:block font-body text-[13px] font-medium text-gray-500 dark:text-gray-400">
-                        {formatDate(doc.uploadedAt || '')}
-                      </div>
+                        <div className="w-[120px] hidden lg:block font-body text-[13px] font-medium text-gray-500 dark:text-gray-400">
+                          {formatDate(doc.uploadedAt || '')}
+                        </div>
 
                       <div className="w-8 flex justify-end relative">
                         <button

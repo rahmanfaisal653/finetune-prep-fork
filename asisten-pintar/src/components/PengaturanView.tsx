@@ -136,7 +136,7 @@ export const PengaturanView: React.FC<PengaturanViewProps> = ({
                   value={serverUrl}
                   onChange={(e) => setServerUrl(e.target.value)}
                   className="w-full bg-[#f3f4f5] dark:bg-[#2e3132] border border-[#cdc3d0] dark:border-gray-700 rounded-lg px-4 py-3 font-body text-[14px] text-[#191c1d] dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#d8b4fe] focus:border-[#6f5092]"
-                  placeholder="http://43.159.43.50:20128/v1"
+                  placeholder="http://localhost:8000/v1"
                 />
                 <p className="mt-1 font-body text-[11px] text-[#4a454f] dark:text-gray-400">
                   Biasanya tidak perlu diubah
