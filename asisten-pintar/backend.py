@@ -259,11 +259,13 @@ def get_watched_folder():
 def choose_folder():
     """Open a native folder selection dialog on the server side."""
     import subprocess
+    import sys
     cmd = [
-        "python", "-c",
+        sys.executable, "-c",
         "import tkinter as tk, tkinter.filedialog as fd; "
         "r = tk.Tk(); r.withdraw(); r.attributes('-topmost', True); "
-        "print(fd.askdirectory(parent=r, title='Pilih Folder'))"
+        "folder = fd.askdirectory(parent=r, title='Pilih Folder'); "
+        "print(folder if folder else '')"
     ]
     try:
         # Run in a subprocess to avoid Tkinter threading issues in FastAPI

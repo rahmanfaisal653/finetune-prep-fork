@@ -21,12 +21,42 @@ export const DokumenSayaView: React.FC<DokumenSayaViewProps> = ({
   onQuickChat,
   darkMode,
 }) => {
-  const [folderPathInput, setFolderPathInput] = useState('G:\\My Drive\\Colab Notebooks');
+  const [folderPathInput, setFolderPathInput] = useState('');
   const [quickChatInput, setQuickChatInput] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
+  const [isChoosingFolder, setIsChoosingFolder] = useState(false);
+
+  React.useEffect(() => {
+    fetch('/api/knowledge/watched-folder')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.folder) {
+          setFolderPathInput(data.folder);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleBrowseFolder = async () => {
+    setIsChoosingFolder(true);
+    try {
+      const res = await fetch('/api/knowledge/choose-folder');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.folder) {
+          setFolderPathInput(data.folder);
+        }
+      }
+    } catch (e) {
+      console.error('Error choosing folder:', e);
+    } finally {
+      setIsChoosingFolder(false);
+    }
+  };
 
   const handleScanClick = async () => {
+    if (!folderPathInput.trim()) return;
     setIsScanning(true);
     try {
       await onScanFolder(folderPathInput);
@@ -187,23 +217,36 @@ export const DokumenSayaView: React.FC<DokumenSayaViewProps> = ({
                 Path Folder
               </label>
 
-              <div className="flex gap-3 w-full">
+              <div className="flex gap-2 sm:gap-3 w-full">
                 <input
                   type="text"
                   value={folderPathInput}
                   onChange={(e) => setFolderPathInput(e.target.value)}
                   className="flex-1 bg-[#f3f4f5] dark:bg-[#2e3132] border border-[#cdc3d0] dark:border-gray-700 rounded-lg px-3.5 py-2 font-body text-[14px] text-[#191c1d] dark:text-gray-100 focus:outline-none focus:border-[#6f5092]"
-                  placeholder="Path folder..."
+                  placeholder="Pilih atau masukkan path folder..."
                 />
                 <button
+                  type="button"
+                  onClick={handleBrowseFolder}
+                  disabled={isChoosingFolder || isScanning}
+                  className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg font-body text-[14px] font-semibold transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap border border-gray-300 dark:border-gray-600 cursor-pointer disabled:opacity-50"
+                  title="Pilih Folder dari Komputer"
+                >
+                  <span className="material-symbols-outlined text-[20px]">
+                    {isChoosingFolder ? 'hourglass_top' : 'folder_open'}
+                  </span>
+                  <span className="hidden sm:inline">Pilih Folder</span>
+                </button>
+                <button
                   onClick={handleScanClick}
-                  disabled={isScanning}
+                  disabled={isScanning || !folderPathInput.trim()}
                   className="bg-[#FFD54F] hover:opacity-90 text-[#29074a] px-5 py-2 rounded-lg font-body text-[14px] font-semibold transition-colors flex items-center justify-center gap-2 whitespace-nowrap shadow-sm cursor-pointer disabled:opacity-50"
-                  title="Scan folder"
+                  title="Scan dan Ingest Folder"
                 >
                   <span className="material-symbols-outlined text-[20px]">
                     {isScanning ? 'sync' : 'search'}
                   </span>
+                  <span className="hidden sm:inline">Scan</span>
                 </button>
               </div>
             </div>
